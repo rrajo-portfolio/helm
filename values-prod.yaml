@@ -10,3 +10,7 @@ orders-service:
   image:
     repository: ghcr.io/rrajo-portfolio/orders-service
     tag: latest
+gateway-service:
+  image:
+    repository: ghcr.io/rrajo-portfolio/gateway-service
+    tag: latest

@@ -34,3 +34,13 @@ orders-service:
     SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak:8080/realms/portfolio
     SERVICES_USERS_BASE_URL: http://users-service:8080/api
     SERVICES_CATALOG_BASE_URL: http://catalog-service:8080/api
+gateway-service:
+  image:
+    repository: rrajo-portfolio/gateway-service
+    tag: latest
+  env:
+    SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: http://keycloak:8080/auth/realms/portfolio/protocol/openid-connect/certs
+    SECURITY_OAUTH2_EXPECTED_ISSUER: http://keycloak:8080/auth/realms/portfolio
+    GATEWAY_CATALOG_URI: http://catalog-service:8080
+    GATEWAY_USERS_URI: http://users-service:8080
+    GATEWAY_ORDERS_URI: http://orders-service:8080
