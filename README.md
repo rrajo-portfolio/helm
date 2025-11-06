@@ -1,10 +1,11 @@
 # Portfolio Helm Charts
 
 ## Structure
-- `catalog-service/`, `users-service/`, `orders-service/`: individual charts for each microservicio.
-- `portfolio-stack/`: umbrella chart that pulls the three services as dependencies.
-- `values-dev.yaml`, `values-prod.yaml`: sample overlays for dev/prod registries.
-- `install-all.ps1`: helper script that runs `helm dependency update` and installs `portfolio-stack`.
+- `catalog-service/`, `users-service/`, `orders-service/`: individual charts para cada microservicio.
+- `portfolio-infra/`: recursos compartidos (MySQL, Postgres, Keycloak, Kafka, Elasticsearch, Kibana, Mailhog, Adminer).
+- `portfolio-stack/`: umbrella chart que toma los tres servicios como dependencias.
+- `values-dev.yaml`, `values-prod.yaml`: overlays de imágenes por entorno.
+- `install-all.ps1`: script que actualiza dependencias y despliega `portfolio-infra` + `portfolio-stack`.
 
 ## Quick Start
 ```powershell
@@ -20,6 +21,11 @@ helm upgrade --install portfolio-stack ./portfolio-stack \
   --set catalog-service.image.tag=2025.11.06 \
   --set users-service.image.tag=2025.11.06 \
   --set orders-service.image.tag=2025.11.06
+```
+
+To install únicamente la infraestructura:
+```bash
+helm upgrade --install portfolio-infra ./portfolio-infra -n portfolio
 ```
 
 ## Publishing
