@@ -28,6 +28,12 @@ To install únicamente la infraestructura:
 helm upgrade --install portfolio-infra ./portfolio-infra -n portfolio
 ```
 
+Grafana incluye un dashboard `Portfolio Overview` precargado con métricas de catálogo/usuarios/orders (requests, errores, Kafka, JVM). Accede tras un port-forward:
+```bash
+kubectl port-forward svc/grafana 3000:3000 -n portfolio
+```
+Credenciales por defecto: `admin` / `admin`. Prometheus escucha en `http://prometheus:9090`.
+
 ## Publishing
 1. Initialize a Git repository in this folder (`git init`, add remote `https://github.com/rrajo-portfolio/helm.git`).
 2. `git add . && git commit -m "feat: add portfolio stack chart"`.
