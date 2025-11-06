@@ -2,7 +2,7 @@
 
 ## Structure
 - `catalog-service/`, `users-service/`, `orders-service/`: individual charts para cada microservicio.
-- `portfolio-infra/`: recursos compartidos (MySQL, Postgres, Keycloak, Kafka, Elasticsearch, Kibana, Mailhog, Adminer).
+- `portfolio-infra/`: recursos compartidos (MySQL, Postgres, Keycloak, Kafka, Elasticsearch, Kibana, Prometheus, Grafana, Mailhog, Adminer).
 - `portfolio-stack/`: umbrella chart que toma los tres servicios como dependencias.
 - `values-dev.yaml`, `values-prod.yaml`: overlays de imágenes por entorno.
 - `install-all.ps1`: script que actualiza dependencias y despliega `portfolio-infra` + `portfolio-stack`.

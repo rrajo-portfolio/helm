@@ -67,3 +67,27 @@ adminer:
   image: adminer:latest
   service:
     port: 8080
+
+prometheus:
+  enabled: true
+  image: prom/prometheus:v2.55.0
+  service:
+    port: 9090
+  scrapeConfig:
+    additionalScrapeConfigs: []
+  persistence:
+    enabled: false
+    size: 5Gi
+
+grafana:
+  enabled: true
+  image: grafana/grafana:11.1.0
+  adminUser: admin
+  adminPassword: admin
+  service:
+    port: 3000
+  datasources:
+    prometheusUrl: http://prometheus:9090
+  persistence:
+    enabled: false
+    size: 5Gi
