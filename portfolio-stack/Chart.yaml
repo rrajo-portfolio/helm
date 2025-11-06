@@ -17,3 +17,6 @@ dependencies:
   - name: gateway-service
     version: 0.1.0
     repository: file://../gateway-service
+  - name: notification-service
+    version: 0.1.0
+    repository: file://../notification-service

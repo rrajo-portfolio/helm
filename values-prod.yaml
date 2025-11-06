@@ -14,3 +14,7 @@ gateway-service:
   image:
     repository: ghcr.io/rrajo-portfolio/gateway-service
     tag: latest
+notification-service:
+  image:
+    repository: ghcr.io/rrajo-portfolio/notification-service
+    tag: latest

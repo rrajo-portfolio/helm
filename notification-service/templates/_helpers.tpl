@@ -1,12 +1,11 @@
-{{- define "catalog-service.name" -}}
+{{- define "notification-service.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
-{{- define "catalog-service.fullname" -}}
-{{- $name := default .Chart.Name .Values.nameOverride -}}
+{{- define "notification-service.fullname" -}}
 {{- if .Values.fullnameOverride -}}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
-{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- printf "%s-%s" .Release.Name (include "notification-service.name" .) | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 {{- end -}}

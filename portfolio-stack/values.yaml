@@ -34,6 +34,11 @@ orders-service:
     SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak:8080/realms/portfolio
     SERVICES_USERS_BASE_URL: http://users-service:8080/api
     SERVICES_CATALOG_BASE_URL: http://catalog-service:8080/api
+    SPRING_RABBITMQ_HOST: rabbitmq
+    SPRING_RABBITMQ_PORT: "5672"
+    SPRING_RABBITMQ_USERNAME: rabbit
+    SPRING_RABBITMQ_PASSWORD: rabbit
+    ORDERS_NOTIFICATION_ENABLED: "true"
 gateway-service:
   image:
     repository: rrajo-portfolio/gateway-service
@@ -44,3 +49,14 @@ gateway-service:
     GATEWAY_CATALOG_URI: http://catalog-service:8080
     GATEWAY_USERS_URI: http://users-service:8080
     GATEWAY_ORDERS_URI: http://orders-service:8080
+notification-service:
+  image:
+    repository: rrajo-portfolio/notification-service
+    tag: latest
+  env:
+    SPRING_RABBITMQ_HOST: rabbitmq
+    SPRING_RABBITMQ_PORT: "5672"
+    SPRING_RABBITMQ_USERNAME: rabbit
+    SPRING_RABBITMQ_PASSWORD: rabbit
+    MAIL_HOST: mailhog
+    MAIL_PORT: "1025"

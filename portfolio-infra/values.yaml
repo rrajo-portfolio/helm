@@ -72,6 +72,15 @@ adminer:
   service:
     port: 8080
 
+rabbitmq:
+  enabled: true
+  image: rabbitmq:3.13-management
+  user: rabbit
+  password: rabbit
+  service:
+    amqpPort: 5672
+    uiPort: 15672
+
 prometheus:
   enabled: true
   image: prom/prometheus:v2.55.0
