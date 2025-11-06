@@ -1,3 +1,47 @@
+{{- if .Values.zookeeper.enabled }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zookeeper
+  labels:
+    app: zookeeper
+spec:
+  ports:
+    - port: {{ .Values.zookeeper.clientPort }}
+      targetPort: 2181
+      name: client
+  selector:
+    app: zookeeper
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zookeeper
+  labels:
+    app: zookeeper
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zookeeper
+  template:
+    metadata:
+      labels:
+        app: zookeeper
+    spec:
+      containers:
+        - name: zookeeper
+          image: {{ .Values.zookeeper.image }}
+          ports:
+            - containerPort: 2181
+          env:
+            - name: ZOOKEEPER_CLIENT_PORT
+              value: "{{ .Values.zookeeper.clientPort }}"
+            - name: ZOOKEEPER_TICK_TIME
+              value: "2000"
+{{- end }}
+
 {{- if .Values.kafka.enabled }}
 ---
 apiVersion: v1
@@ -35,33 +79,25 @@ spec:
           image: {{ .Values.kafka.image }}
           ports:
             - containerPort: 9092
-            - containerPort: 9093
-            - containerPort: 9094
           env:
-            - name: KAFKA_ENABLE_KRAFT
-              value: "yes"
-            - name: KAFKA_CFG_PROCESS_ROLES
-              value: controller,broker
-            - name: KAFKA_CFG_NODE_ID
+            - name: KAFKA_BROKER_ID
               value: "1"
-            - name: KAFKA_CFG_CONTROLLER_QUORUM_VOTERS
-              value: "1@kafka:9093"
-            - name: KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP
-              value: "CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT"
-            - name: KAFKA_CFG_ADVERTISED_LISTENERS
-              value: "PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:{{ .Values.kafka.hostPort }}"
-            - name: KAFKA_CFG_LISTENERS
-              value: "PLAINTEXT://:9092,CONTROLLER://:9093,PLAINTEXT_HOST://:{{ .Values.kafka.hostPort }}"
-            - name: KAFKA_CFG_CONTROLLER_LISTENER_NAMES
-              value: CONTROLLER
-            - name: KAFKA_CFG_INTER_BROKER_LISTENER_NAME
+            - name: KAFKA_ZOOKEEPER_CONNECT
+              value: zookeeper:{{ .Values.zookeeper.clientPort | default 2181 }}
+            - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+              value: PLAINTEXT:PLAINTEXT
+            - name: KAFKA_LISTENERS
+              value: PLAINTEXT://0.0.0.0:9092
+            - name: KAFKA_ADVERTISED_LISTENERS
+              value: PLAINTEXT://kafka:{{ .Values.kafka.service.port }}
+            - name: KAFKA_INTER_BROKER_LISTENER_NAME
               value: PLAINTEXT
-            - name: ALLOW_PLAINTEXT_LISTENER
-              value: "yes"
-          volumeMounts:
-            - name: kafka-data
-              mountPath: /bitnami/kafka
-      volumes:
-        - name: kafka-data
-          emptyDir: {}
+            - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
+              value: "1"
+            - name: KAFKA_TRANSACTION_STATE_LOG_MIN_ISR
+              value: "1"
+            - name: KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR
+              value: "1"
+            - name: KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS
+              value: "0"
 {{- end }}

@@ -37,12 +37,16 @@ keycloak:
   service:
     port: 8080
 
+zookeeper:
+  enabled: true
+  image: confluentinc/cp-zookeeper:7.6.0
+  clientPort: 2181
+
 kafka:
   enabled: true
-  image: bitnami/kafka:3.7.0
+  image: confluentinc/cp-kafka:7.6.0
   service:
     port: 9092
-  hostPort: 9094
 
 elasticsearch:
   enabled: true
