@@ -12,7 +12,7 @@
 cd helm
 ./install-all.ps1 -Namespace portfolio
 ```
-This updates dependencies and deploys the umbrella chart using `values-dev.yaml`.
+This updates dependencies and deploys the umbrella chart using `values-dev.yaml`. **Jenkins no ejecuta estos comandos**: lánzalos desde tu máquina (o un agente con kube-context) una vez tengas acceso al cluster.
 
 To override container tags:
 ```bash
